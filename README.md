@@ -57,4 +57,6 @@ Track your daily progress and contributions. Update each day with your accomplis
 
 ### Updates Log
 
+## 2025-12-16
+- Configured the project to use Next.js 
 

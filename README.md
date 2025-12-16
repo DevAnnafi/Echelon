@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 Echelon Dashboard  
+**An AI-powered personal productivity dashboard built with React, Next.js, TypeScript, and TailwindCSS.**
 
-## Getting Started
+Echelon Dashboard brings together AI, analytics, and design to create a smart, elegant workspace for managing your life — from tasks and goals to intelligent AI insights. Built to impress recruiters and demonstrate full-stack engineering mastery.
 
-First, run the development server:
+---
 
+## ✨ Features
+
+- 🧠 **AI Assistant** — Chat with an integrated OpenAI-powered coach to plan your day, generate ideas, or summarize notes.  
+- ✅ **Task & Habit Tracker** — Add, complete, and visualize tasks with streaks and progress indicators.  
+- 📊 **Data Visualization** — Interactive charts using Recharts to track habits, workouts, or goals.  
+- 🎨 **Modern UI/UX** — TailwindCSS + Shadcn/UI + Framer Motion animations.  
+- 🌙 **Dark/Light Mode** — Beautiful, theme-aware design.  
+- 💾 **Local & Cloud Persistence** — Sync tasks and settings locally and (optionally) with MongoDB.  
+- 🔒 **Authentication Ready** — Firebase/NextAuth compatible for OAuth or JWT.  
+- ⚡ **Full-Stack Ready** — Includes backend API scaffolding (Node.js + Express).  
+
+---
+
+## 🧰 Tech Stack
+
+| Layer | Technology |
+|:------|:------------|
+| **Frontend** | **Next.js (React 18) + TypeScript** |
+| **UI/UX** | Tailwind CSS + shadcn/ui + Framer Motion |
+| **State Management** | Zustand |
+| **AI Integration** | OpenAI API |
+| **Backend** | Next.js Server Actions & API Routes |
+| **Database** | PostgreSQL (Supabase) |
+| **ORM** | Prisma |
+| **Authentication** | Auth.js (NextAuth) or Supabase Auth |
+| **Charts** | Recharts |
+| **Deployment** | Vercel |
+
+
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/DevAnnafi/echelon.git
+cd echelon
 ```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📝 Daily Updates
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Track your daily progress and contributions. Update each day with your accomplishments and next steps. Each bullet point can be a separate commit to get darker contribution squares.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### How to use
+1. Add a new entry for today.
+2. Include multiple bullet points for tasks or notes to make multiple commits.
+3. Include a “Next Steps” bullet for planned actions.
+4. Commit and push each change.
 
-## Learn More
+### Updates Log
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

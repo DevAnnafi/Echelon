@@ -1,8 +1,23 @@
+"use client";
+
 import { Button } from "../components/ui/button";
 import { ArrowRight, Zap, Brain, BarChart3, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+
+type Task = { id: string; title: string; status: string };
+type Note = { id: string; title: string; content: string };
+type AIConversation = { id: string; prompt: string; response: string };
 
 export default function Home() {
+  // --- Supabase state ---
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [aiConversations, setAIConversations] = useState<AIConversation[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // --- Features section ---
   const features = [
     {
       icon: Brain,
@@ -26,39 +41,58 @@ export default function Home() {
     },
   ];
 
+  // --- Fetch data from Supabase ---
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = supabase.auth.users();
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      const [tasksRes, notesRes, aiRes] = await Promise.all([
+        supabase.from("tasks").select("*").eq("user_id", user.id),
+        supabase.from("notes").select("*").eq("user_id", user.id),
+        supabase.from("ai_conversations").select("*").eq("user_id", user.id),
+      ]);
+
+      if (tasksRes.error) console.error("Tasks Error:", tasksRes.error);
+      if (notesRes.error) console.error("Notes Error:", notesRes.error);
+      if (aiRes.error) console.error("AI Error:", aiRes.error);
+
+      setTasks(tasksRes.data || []);
+      setNotes(notesRes.data || []);
+      setAIConversations(aiRes.data || []);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          {/* Background Gradient */}
           <div className="absolute inset-0 -z-10">
             <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
           </div>
-
           <div className="text-center space-y-8">
-            {/* Badge */}
             <div className="inline-block">
               <span className="px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-sm font-semibold">
                 ✨ AI-Powered Productivity Dashboard
               </span>
             </div>
-
-            {/* Main Heading */}
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight">
               Elevate Your{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Productivity
               </span>
             </h1>
-
-            {/* Subheading */}
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
               An intelligent dashboard that combines AI insights, task tracking, and data visualization to help you manage your life smarter.
             </p>
-
-            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link href="/dashboard">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
@@ -75,8 +109,6 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-
-            {/* Hero Image Placeholder */}
             <div className="mt-16 rounded-xl border border-slate-200 dark:border-slate-800 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 p-2 shadow-2xl">
               <div className="bg-white dark:bg-slate-950 rounded-lg h-96 flex items-center justify-center">
                 <div className="text-center text-slate-400 dark:text-slate-600">
@@ -86,6 +118,55 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Dynamic Data Preview Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
+        <div className="max-w-7xl mx-auto space-y-12">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Your Dashboard Preview</h2>
+
+          {loading ? (
+            <p>Loading data...</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Tasks Preview */}
+              <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Tasks</h3>
+                {tasks.length === 0 ? <p className="text-slate-600 dark:text-slate-400">No tasks yet.</p> : (
+                  <ul className="space-y-1">
+                    {tasks.slice(0, 5).map(task => (
+                      <li key={task.id}>{task.title} - {task.status}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* Notes Preview */}
+              <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Notes</h3>
+                {notes.length === 0 ? <p className="text-slate-600 dark:text-slate-400">No notes yet.</p> : (
+                  <ul className="space-y-1">
+                    {notes.slice(0, 5).map(note => (
+                      <li key={note.id}>{note.title}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* AI Conversations Preview */}
+              <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">AI Conversations</h3>
+                {aiConversations.length === 0 ? <p className="text-slate-600 dark:text-slate-400">No conversations yet.</p> : (
+                  <ul className="space-y-1">
+                    {aiConversations.slice(0, 5).map(conv => (
+                      <li key={conv.id}>{conv.prompt}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -115,9 +196,7 @@ export default function Home() {
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    {feature.description}
-                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">{feature.description}</p>
                 </div>
               );
             })}
@@ -138,14 +217,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[
-              "Next.js",
-              "React",
-              "TypeScript",
-              "TailwindCSS",
-              "Recharts",
-              "OpenAI",
-            ].map((tech) => (
+            {["Next.js","React","TypeScript","TailwindCSS","Recharts","OpenAI"].map(tech => (
               <div
                 key={tech}
                 className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-center font-semibold text-slate-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"

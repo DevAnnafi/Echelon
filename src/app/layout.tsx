@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Navbar } from "src/components/layout/navbar";
-import { Footer } from "src/components/layout/footer";
-
-
+import { Navbar } from "../components/layout/navbar";
+import { Footer } from "../components/layout/footer";
+import { ThemeProvider } from "../components/layout/theme-provider";
 
 export const metadata: Metadata = {
   title: "Echelon Dashboard | AI-Powered Productivity",

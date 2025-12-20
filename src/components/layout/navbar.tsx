@@ -1,16 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
+  // Hide navbar on login/auth pages
+  if (mounted && pathname?.includes("/login")) {
+    return null;
+  }
 
   const navLinks = [
     { href: "/", label: "Dashboard" },
@@ -46,20 +56,14 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Right Section - Theme Toggle & Menu */}
+          {/* Right Section - Sign In Button & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-5 h-5 text-yellow-500" />
-              ) : (
-                <Moon className="w-5 h-5 text-slate-600" />
-              )}
-            </button>
+            {/* Sign In Button */}
+            <Link href="/login" className="hidden sm:block">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                Sign In
+              </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <button
@@ -89,6 +93,12 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {/* Mobile Sign In Button */}
+            <Link href="/login" onClick={() => setIsOpen(false)} className="block">
+              <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Sign In
+              </Button>
+            </Link>
           </div>
         )}
       </div>

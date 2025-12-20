@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Navbar } from "../components/layout/navbar";
-import { Footer } from "../components/layout/footer";
-import { ThemeProvider } from "../components/layout/theme-provider";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -40,15 +40,10 @@ export default function RootLayout({
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="flex flex-col min-h-screen">
-            {/* Navigation */}
             <Navbar />
-
-            {/* Main Content */}
             <main className="flex-1 w-full">
               {children}
             </main>
-
-            {/* Footer */}
             <Footer />
           </div>
         </ThemeProvider>

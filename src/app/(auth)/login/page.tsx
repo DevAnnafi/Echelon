@@ -39,9 +39,10 @@ export default function LoginPage() {
               className="object-contain"
             />
           </Link>
-  <h1 className="text-3xl font-bold text-white mb-2">Echelon</h1>
-  <p className="text-gray-400">Sign in to continue your journey</p>
-</div>
+          
+          <h1 className="text-3xl font-bold text-white mb-2">Echelon</h1>
+          <p className="text-gray-400">Sign in to continue your journey</p>
+      </div>
 
         {/* Form Card */}
         <div className="relative">

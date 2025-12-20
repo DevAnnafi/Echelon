@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Zap } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -39,12 +40,19 @@ export default function SignUpPage() {
       <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <Link href="/" className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-slate-700 rounded-lg mb-4 mx-auto hover:opacity-80 transition-opacity">
-            <Zap size={28} className="text-white" strokeWidth={3} />
+          <Link href="/" className="inline-flex items-center justify-center w-20 h-20 mb-4 mx-auto hover:opacity-80 transition-opacity">
+            <Image
+              src="/images/Echelon_Logo.png"
+              alt="Echelon Logo"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
           </Link>
+          
           <h1 className="text-3xl font-bold text-white mb-2">Echelon</h1>
-          <p className="text-gray-400">Create your account and elevate your productivity</p>
-        </div>
+          <p className="text-gray-400">Sign Up To Level Up Your Life</p>
+      </div>
 
         {/* Form Card */}
         <div className="relative">

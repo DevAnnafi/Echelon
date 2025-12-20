@@ -21,6 +21,10 @@ export function Navbar() {
   if (mounted && pathname?.includes("/login")) {
     return null;
   }
+// Hide navbar on login/register page
+  if (mounted && pathname?.includes("/register")) {
+    return null;
+  }
 
   const navLinks = [
     { href: "/", label: "Dashboard" },

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Github,Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
- 
+
   const footerLinks = {
     Product: [
       { label: "Features", href: "#features" },
@@ -33,8 +34,16 @@ export function Footer() {
       href: "https://github.com/DevAnnafi/echelon",
       label: "GitHub",
     },
-    { icon: Linkedin, href: "https://linkedin.com/in/annafi-islam", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:islamannafi@gmail.com", label: "Email" },
+    {
+      icon: Linkedin,
+      href: "https://linkedin.com/in/annafi-islam",
+      label: "LinkedIn",
+    },
+    {
+      icon: Mail,
+      href: "mailto:islamannafi@gmail.com",
+      label: "Email",
+    },
   ];
 
   return (
@@ -44,17 +53,24 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">E</span>
-              </div>
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/images/Echelon.png"
+                alt="Echelon logo"
+                width={32}
+                height={32}
+                priority
+              />
               <span className="font-bold text-lg text-slate-900 dark:text-white">
                 Echelon
               </span>
-            </div>
+            </Link>
+
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              AI-powered personal productivity dashboard. Manage tasks, track habits, and gain insights.
+              AI-powered personal productivity dashboard. Manage tasks, track
+              habits, and gain insights.
             </p>
+
             <div className="flex space-x-3">
               {socialLinks.map(({ icon: Icon, href, label }) => (
                 <a
@@ -95,7 +111,6 @@ export function Footer() {
 
         {/* Divider */}
         <div className="border-t border-slate-200 dark:border-slate-800 pt-8">
-          {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-slate-600 dark:text-slate-400">
               © {currentYear} Echelon Dashboard. Built to impress.

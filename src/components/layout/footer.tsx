@@ -15,7 +15,7 @@ export function Footer() {
       { label: "AI Assistant", href: "/ai-assistant" },
     ],
     Resources: [
-      { label: "Documentation", href: "/docs" },
+      { label: "Documentation", href: "/documentation" },
       { label: "Blog", href: "/blog" },
       { label: "GitHub", href: "https://github.com/DevAnnafi/Echelon" },
       { label: "Support", href: "/support" },

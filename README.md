@@ -55,8 +55,5 @@ Track your daily progress and contributions. Update each day with your accomplis
 3. Include a “Next Steps” bullet for planned actions.
 4. Commit and push each change.
 
-### Updates Log
 
-## 2025-12-16
-- Configured the project to use Next.js 
 

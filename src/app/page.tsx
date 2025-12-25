@@ -16,6 +16,8 @@ export default function Home() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [aiConversations, setAIConversations] = useState<AIConversation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState<string>("Checking...");
+  const [debugInfo, setDebugInfo] = useState<string>("");
 
   const features = [
     {
@@ -42,26 +44,60 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const user = supabase.auth.users();
-      if (!user) {
+      try {
+        // Test connection
+        if (!supabase) {
+          setConnectionStatus("❌ Supabase client not initialized");
+          setLoading(false);
+          return;
+        }
+        setConnectionStatus("✅ Supabase connected");
+
+        // Get the current user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        
+        if (authError) {
+          setDebugInfo(`Auth Error: ${authError.message}`);
+        }
+
+        if (!user) {
+          setDebugInfo("No authenticated user - showing empty state");
+          setLoading(false);
+          return;
+        }
+
+        setDebugInfo(`User ID: ${user.id}`);
+
+        // Fetch all data in parallel
+        const [tasksRes, notesRes, aiRes] = await Promise.all([
+          supabase
+            .from("tasks")
+            .select("*")
+            .eq("user_id", user.id),
+          supabase
+            .from("notes")
+            .select("*")
+            .eq("user_id", user.id),
+          supabase
+            .from("ai_conversations")
+            .select("*")
+            .eq("user_id", user.id),
+        ]);
+
+        if (tasksRes.error) console.error("Tasks Error:", tasksRes.error);
+        if (notesRes.error) console.error("Notes Error:", notesRes.error);
+        if (aiRes.error) console.error("AI Error:", aiRes.error);
+
+        setTasks(tasksRes.data || []);
+        setNotes(notesRes.data || []);
+        setAIConversations(aiRes.data || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setConnectionStatus("❌ Connection failed");
+        setDebugInfo(error instanceof Error ? error.message : "Unknown error");
+      } finally {
         setLoading(false);
-        return;
       }
-
-      const [tasksRes, notesRes, aiRes] = await Promise.all([
-        supabase.from("tasks").select("*").eq("user_id", user.id),
-        supabase.from("notes").select("*").eq("user_id", user.id),
-        supabase.from("ai_conversations").select("*").eq("user_id", user.id),
-      ]);
-
-      if (tasksRes.error) console.error("Tasks Error:", tasksRes.error);
-      if (notesRes.error) console.error("Notes Error:", notesRes.error);
-      if (aiRes.error) console.error("AI Error:", aiRes.error);
-
-      setTasks(tasksRes.data || []);
-      setNotes(notesRes.data || []);
-      setAIConversations(aiRes.data || []);
-      setLoading(false);
     };
 
     fetchData();
@@ -122,18 +158,28 @@ export default function Home() {
       {/* Dynamic Data Preview Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto space-y-12">
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Your Dashboard Preview</h2>
+          <div>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Your Dashboard Preview</h2>
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="text-sm font-semibold text-blue-900 dark:text-blue-200">{connectionStatus}</p>
+              {debugInfo && <p className="text-xs text-blue-800 dark:text-blue-300 mt-1">{debugInfo}</p>}
+            </div>
+          </div>
 
           {loading ? (
-            <p>Loading data...</p>
+            <p className="text-slate-600 dark:text-slate-400">Loading data...</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Tasks</h3>
-                {tasks.length === 0 ? <p className="text-slate-600 dark:text-slate-400">No tasks yet.</p> : (
+                {tasks.length === 0 ? (
+                  <p className="text-slate-600 dark:text-slate-400">No tasks yet.</p>
+                ) : (
                   <ul className="space-y-1">
-                    {tasks.slice(0, 5).map(task => (
-                      <li key={task.id}>{task.title} - {task.status}</li>
+                    {tasks.slice(0, 5).map((task) => (
+                      <li key={task.id} className="text-sm text-slate-700 dark:text-slate-300">
+                        {task.title} - <span className="text-xs text-slate-500">{task.status}</span>
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -141,10 +187,14 @@ export default function Home() {
 
               <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Notes</h3>
-                {notes.length === 0 ? <p className="text-slate-600 dark:text-slate-400">No notes yet.</p> : (
+                {notes.length === 0 ? (
+                  <p className="text-slate-600 dark:text-slate-400">No notes yet.</p>
+                ) : (
                   <ul className="space-y-1">
-                    {notes.slice(0, 5).map(note => (
-                      <li key={note.id}>{note.title}</li>
+                    {notes.slice(0, 5).map((note) => (
+                      <li key={note.id} className="text-sm text-slate-700 dark:text-slate-300">
+                        {note.title}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -152,10 +202,14 @@ export default function Home() {
 
               <div className="p-6 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
                 <h3 className="font-semibold text-slate-900 dark:text-white mb-2">AI Conversations</h3>
-                {aiConversations.length === 0 ? <p className="text-slate-600 dark:text-slate-400">No conversations yet.</p> : (
+                {aiConversations.length === 0 ? (
+                  <p className="text-slate-600 dark:text-slate-400">No conversations yet.</p>
+                ) : (
                   <ul className="space-y-1">
-                    {aiConversations.slice(0, 5).map(conv => (
-                      <li key={conv.id}>{conv.prompt}</li>
+                    {aiConversations.slice(0, 5).map((conv) => (
+                      <li key={conv.id} className="text-sm text-slate-700 dark:text-slate-300 truncate">
+                        {conv.prompt}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -212,14 +266,16 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {["Next.js","React","TypeScript","TailwindCSS","Recharts","OpenAI"].map(tech => (
-              <div
-                key={tech}
-                className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-center font-semibold text-slate-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
-              >
-                {tech}
-              </div>
-            ))}
+            {["Next.js", "React", "TypeScript", "TailwindCSS", "Recharts", "Supabase"].map(
+              (tech) => (
+                <div
+                  key={tech}
+                  className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-center font-semibold text-slate-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
+                >
+                  {tech}
+                </div>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -246,5 +302,3 @@ export default function Home() {
     </div>
   );
 }
-
-

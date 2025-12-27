@@ -6,10 +6,20 @@ import { ArrowRight, Zap, Brain, BarChart3, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 type Task = { id: string; title: string; status: string };
 type Note = { id: string; title: string; content: string };
 type AIConversation = { id: string; prompt: string; response: string };
+
+const chartData = [
+  { week: 'Week 1', tasks: 12, completed: 8, habits: 5 },
+  { week: 'Week 2', tasks: 15, completed: 12, habits: 6 },
+  { week: 'Week 3', tasks: 10, completed: 9, habits: 7 },
+  { week: 'Week 4', tasks: 18, completed: 15, habits: 8 },
+  { week: 'Week 5', tasks: 14, completed: 12, habits: 7 },
+  { week: 'Week 6', tasks: 20, completed: 18, habits: 9 },
+];
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -143,12 +153,31 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            <div className="mt-16 rounded-xl border border-slate-200 dark:border-slate-800 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 p-2 shadow-2xl">
-              <div className="bg-white dark:bg-slate-950 rounded-lg h-96 flex items-center justify-center">
-                <div className="text-center text-slate-400 dark:text-slate-600">
-                  <BarChart3 className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p>Dashboard Preview</p>
-                </div>
+            <div className="mt-16 rounded-xl border border-slate-200 dark:border-slate-800 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 p-2 shadow-2xl overflow-hidden">
+              <div className="bg-white dark:bg-slate-950 rounded-lg p-8">
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient id="colorCompleted" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                      </linearGradient>
+                      <linearGradient id="colorTasks" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="week" stroke="#64748b" />
+                    <YAxis stroke="#64748b" />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569', borderRadius: '8px', color: '#e2e8f0' }}
+                    />
+                    <Legend />
+                    <Area type="monotone" dataKey="tasks" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorTasks)" />
+                    <Area type="monotone" dataKey="completed" stroke="#3b82f6" fillOpacity={1} fill="url(#colorCompleted)" />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </div>
@@ -300,176 +329,174 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Pricing section */}
-<section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950">
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16">
-      <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-        Choose Your Plan
-      </h2>
-      <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-        Start free and upgrade when you want to level up your life
-      </p>
-    </div>
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">
+              Choose Your Plan
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Start free and upgrade when you want to level up your life
+            </p>
+          </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {/* Starter Plan */}
-      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-lg transition-all duration-300 p-8">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-          Starter
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-          Perfect for getting started
-        </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Starter Plan */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-lg transition-all duration-300 p-8">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                Starter
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                Perfect for getting started
+              </p>
 
-        <div className="mb-6">
-          <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-bold text-slate-900 dark:text-white">
-              Free
-            </span>
+              <div className="mb-6">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-slate-900 dark:text-white">
+                    Free
+                  </span>
+                </div>
+              </div>
+
+              <button className="w-full py-3 rounded-lg font-semibold transition-all duration-300 mb-8 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
+                Get Started
+              </button>
+
+              <div className="space-y-4">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
+                  What's Included
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Up to 50 tasks",
+                    "Basic task tracking",
+                    "5 AI conversations/month",
+                    "Dark mode",
+                    "Basic analytics",
+                    "Email support",
+                  ].map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Professional Plan - Highlighted */}
+            <div className="rounded-2xl border-2 border-blue-500 shadow-2xl scale-105 bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/30 dark:to-slate-900 p-8 relative">
+              <div className="absolute -top-4 left-6">
+                <span className="inline-block px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-semibold">
+                  ⭐ Most Popular
+                </span>
+              </div>
+
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 mt-4">
+                Professional
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                For serious productivity enthusiasts
+              </p>
+
+              <div className="mb-6">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-slate-900 dark:text-white">
+                    $9.99
+                  </span>
+                  <span className="text-slate-600 dark:text-slate-400">/month</span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                  Billed monthly. Cancel anytime.
+                </p>
+              </div>
+
+              <button className="w-full py-3 rounded-lg font-semibold transition-all duration-300 mb-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl">
+                Start Free Trial
+              </button>
+
+              <div className="space-y-4">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
+                  What's Included
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Unlimited tasks",
+                    "Advanced task & habit tracking",
+                    "Unlimited AI conversations",
+                    "3 AI assistant modes",
+                    "Advanced analytics & charts",
+                    "Project collaboration (3 projects)",
+                    "Priority email support",
+                    "Export data (CSV, PDF)",
+                  ].map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-lg transition-all duration-300 p-8">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                Enterprise
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+                For teams & power users
+              </p>
+
+              <div className="mb-6">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-slate-900 dark:text-white">
+                    $29.99
+                  </span>
+                  <span className="text-slate-600 dark:text-slate-400">/month</span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                  Billed monthly. Cancel anytime.
+                </p>
+              </div>
+
+              <button className="w-full py-3 rounded-lg font-semibold transition-all duration-300 mb-8 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
+                Contact Sales
+              </button>
+
+              <div className="space-y-4">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
+                  What's Included
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Everything in Professional",
+                    "Unlimited projects & team members",
+                    "Real-time team collaboration",
+                    "Custom AI assistant training",
+                    "Advanced integrations (Slack, Calendar, Notion)",
+                    "API access",
+                    "Dedicated account manager",
+                    "24/7 priority support",
+                  ].map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-
-        <button className="w-full py-3 rounded-lg font-semibold transition-all duration-300 mb-8 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
-          Get Started
-        </button>
-
-        <div className="space-y-4">
-          <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
-            What's Included
-          </p>
-          <ul className="space-y-3">
-            {[
-              "Up to 50 tasks",
-              "Basic task tracking",
-              "5 AI conversations/month",
-              "Dark mode",
-              "Basic analytics",
-              "Email support",
-            ].map((feature, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Professional Plan - Highlighted */}
-      <div className="rounded-2xl border-2 border-blue-500 shadow-2xl scale-105 bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/30 dark:to-slate-900 p-8 relative">
-        <div className="absolute -top-4 left-6">
-          <span className="inline-block px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-semibold">
-            ⭐ Most Popular
-          </span>
-        </div>
-
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 mt-4">
-          Professional
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-          For serious productivity enthusiasts
-        </p>
-
-        <div className="mb-6">
-          <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-bold text-slate-900 dark:text-white">
-              $9.99
-            </span>
-            <span className="text-slate-600 dark:text-slate-400">/month</span>
-          </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-            Billed monthly. Cancel anytime.
-          </p>
-        </div>
-
-        <button className="w-full py-3 rounded-lg font-semibold transition-all duration-300 mb-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl">
-          Start Free Trial
-        </button>
-
-        <div className="space-y-4">
-          <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
-            What's Included
-          </p>
-          <ul className="space-y-3">
-            {[
-              "Unlimited tasks",
-              "Advanced task & habit tracking",
-              "Unlimited AI conversations",
-              "3 AI assistant modes",
-              "Advanced analytics & charts",
-              "Project collaboration (3 projects)",
-              "Priority email support",
-              "Export data (CSV, PDF)",
-            ].map((feature, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Enterprise Plan */}
-      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-lg transition-all duration-300 p-8">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-          Enterprise
-        </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
-          For teams & power users
-        </p>
-
-        <div className="mb-6">
-          <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-bold text-slate-900 dark:text-white">
-              $29.99
-            </span>
-            <span className="text-slate-600 dark:text-slate-400">/month</span>
-          </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
-            Billed monthly. Cancel anytime.
-          </p>
-        </div>
-
-        <button className="w-full py-3 rounded-lg font-semibold transition-all duration-300 mb-8 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
-          Contact Sales
-        </button>
-
-        <div className="space-y-4">
-          <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-widest">
-            What's Included
-          </p>
-          <ul className="space-y-3">
-            {[
-              "Everything in Professional",
-              "Unlimited projects & team members",
-              "Real-time team collaboration",
-              "Custom AI assistant training",
-              "Advanced integrations (Slack, Calendar, Notion)",
-              "API access",
-              "Dedicated account manager",
-              "24/7 priority support",
-            ].map((feature, idx) => (
-              <li key={idx} className="flex items-start gap-3">
-                <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span className="text-sm text-slate-700 dark:text-slate-300">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+      </section>
     </div>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Eye, EyeOff, Zap } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 export default function LoginPage() {
@@ -11,11 +13,41 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
+    setError('');
+
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Invalid email or password');
+      } else if (result?.ok) {
+        router.push('/dashboard');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      await signIn('google', { redirect: true, callbackUrl: '/dashboard' });
+    } catch (err) {
+      setError('Google sign-in failed. Please try again.');
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -42,7 +74,7 @@ export default function LoginPage() {
           
           <h1 className="text-3xl font-bold text-white mb-2">Echelon</h1>
           <p className="text-gray-400">Sign in to continue your journey</p>
-      </div>
+        </div>
 
         {/* Form Card */}
         <div className="relative">
@@ -50,6 +82,13 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-slate-600/20 rounded-2xl blur-xl"></div>
           
           <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-white/10 hover:border-white/20 transition-colors">
+            {/* Error Message */}
+            {error && (
+              <div className="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
             {/* Email Field */}
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-semibold text-gray-300 mb-3">
@@ -72,7 +111,7 @@ export default function LoginPage() {
                 <label htmlFor="password" className="block text-sm font-semibold text-gray-300">
                   Password
                 </label>
-                <a href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                <a href="/forgot-password" className="text-xs text-blue-400 hover:text-blue-300 transition-colors">
                   Forgot password?
                 </a>
               </div>
@@ -125,7 +164,11 @@ export default function LoginPage() {
             {/* Social Login Buttons */}
             <div className="grid grid-cols-2 gap-3 mb-6">
               {/* Google Button */}
-              <button className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white py-3 rounded-lg transition-all duration-200">
+              <button
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+                className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white py-3 rounded-lg transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -136,7 +179,10 @@ export default function LoginPage() {
               </button>
 
               {/* Apple Button */}
-              <button className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white py-3 rounded-lg transition-all duration-200">
+              <button
+                disabled={isLoading}
+                className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white py-3 rounded-lg transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.05 13.5c-.1 2.48 2.08 3.7 2.16 3.73-.09.3-.33.93-1.08 1.85-.62.8-1.27 1.59-2.29 1.59-1 0-1.3-.6-2.42-.6-1.14 0-1.46.6-2.43.6-1.04 0-1.67-.78-2.3-1.59-1.26-1.63-2.23-4.62-1.84-7.43.18-1.42 1.17-2.72 2.32-3.45 1.08-.68 2.68-.64 3.56.27.6.6 1.15.61 1.82.25 1.05-.56 1.84-.14 2.3.6-.85 1.14-.73 2.8-.17 3.83zm-3.76-9.47c.47-.58.75-1.42.66-2.25-.64.03-1.42.43-1.89 1-.44.5-.82 1.31-.73 2.08.72.05 1.47-.37 1.96-.83z"/>
                 </svg>

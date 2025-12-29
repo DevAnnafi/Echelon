@@ -287,7 +287,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Stay Organized
+            <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Stay</span> <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Organized</span>
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
               Manage tasks, habits, and daily updates in one elegant workspace - never lose track of your goals

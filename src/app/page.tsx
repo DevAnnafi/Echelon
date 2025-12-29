@@ -287,24 +287,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-              Built with Modern Tech
+              Stay Organized
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">
-              Leveraging the latest technologies for performance and scalability
+              Manage tasks, habits, and daily updates in one elegant workspace - never lose track of your goals
             </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {["Next.js", "React", "TypeScript", "TailwindCSS", "Recharts", "Supabase"].map(
-              (tech) => (
-                <div
-                  key={tech}
-                  className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-center font-semibold text-slate-900 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-colors"
-                >
-                  {tech}
-                </div>
-              )
-            )}
           </div>
         </div>
       </section>

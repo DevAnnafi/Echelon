@@ -27,7 +27,7 @@ export function Navbar() {
   }
 
   const navLinks = [
-    { href: "/", label: "Dashboard" },
+    { href: "/dashboard", label: "Dashboard" },
     { href: "/tasks", label: "Tasks" },
     { href: "/analytics", label: "Analytics" },
     { href: "/ai-assistant", label: "AI Assistant" },

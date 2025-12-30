@@ -10,7 +10,7 @@ export function Footer() {
   const footerLinks = {
     Product: [
       { label: "Features", href: "#features" },
-      { label: "Dashboard", href: "/" },
+      { label: "Dashboard", href: "/dashboard" },
       { label: "Analytics", href: "/analytics" },
       { label: "AI Assistant", href: "/ai-assistant" },
     ],

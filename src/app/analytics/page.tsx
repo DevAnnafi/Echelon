@@ -47,7 +47,7 @@ export default function AnalyticsPage() {
               </div>
               <h2 className="text-2xl font-bold mb-3">No Data Yet</h2>
               <p className="text-gray-400 mb-6">
-                Analytics will appear here once users start interacting with your application.
+                Analytics will appear here once you log in.
               </p>
               <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
                 <TrendingUp size={16} />

@@ -36,7 +36,7 @@ export default function Dashboard() {
         {/* Header */}
         <div className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl font-bold text-white mb-4 animate-fadeIn">
-            Your <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Intelligent Workspace</span>
+            Your <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Intelligent Workspace</span>
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto animate-fadeIn" style={{ animationDelay: '0.2s' }}>
             Everything you need to manage your life in one beautiful dashboard
@@ -76,8 +76,8 @@ export default function Dashboard() {
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-purple-500/20 rounded-lg flex-shrink-0">
-                      <MessageSquare className="w-6 h-6 text-purple-400" />
+                    <div className="p-3 bg-blue-500/20 rounded-lg flex-shrink-0">
+                      <MessageSquare className="w-6 h-6 text-blue-400" />
                     </div>
                     <div className="flex-1">
                       <h4 className="font-bold text-white mb-2">AI Assistant</h4>
@@ -185,7 +185,7 @@ export default function Dashboard() {
         {/* CTA Section */}
         <div className="text-center animate-fadeIn" style={{ animationDelay: '0.4s' }}>
           <p className="text-slate-400 mb-6">Ready to transform your productivity?</p>
-          <button className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50">
+          <button className="px-8 py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50">
             Start Your Free Dashboard →
           </button>
         </div>

@@ -41,14 +41,16 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    try {
-      await signIn('google', { redirect: true, callbackUrl: '/dashboard' });
-    } catch (err) {
-      setError('Google sign-in failed. Please try again.');
-      setIsLoading(false);
+    const result = await signIn("google", {
+      redirect: true,
+      callbackUrl: "/dashboard",
+    });
+
+    if (result?.error) {
+      setError(result.error);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">

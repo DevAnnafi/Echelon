@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+
 type Task = { id: string; title: string; status: string };
 type Note = { id: string; title: string; content: string };
 type AIConversation = { id: string; prompt: string; response: string };
@@ -20,6 +21,8 @@ const chartData = [
   { week: 'Week 5', tasks: 14, completed: 12, habits: 7 },
   { week: 'Week 6', tasks: 20, completed: 18, habits: 9 },
 ];
+
+
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -484,6 +487,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div>
+       </div>
   );
 }

@@ -42,7 +42,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="w-8 h-8 relative">
               <Image
-                src="/images/Echelon.png"
+src="/images/Echelon_Logo.png"
                 alt="Echelon"
                 fill
                 priority

@@ -55,7 +55,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/images/Echelon.png"
+src="/images/Echelon_Logo.png"
                 alt="Echelon logo"
                 width={32}
                 height={32}

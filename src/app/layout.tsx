@@ -1,36 +1,19 @@
-import type { Metadata } from "next";
+'use client';
+
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { usePathname } from "next/navigation";
 import "@/app/globals.css";
-
-export const metadata: Metadata = {
-  title: "Echelon Dashboard | AI-Powered Productivity",
-  description:
-    "An intelligent personal productivity dashboard combining AI insights, task tracking, and data visualization. Built with React, Next.js, and TypeScript.",
-  keywords: [
-    "productivity",
-    "dashboard",
-    "AI",
-    "task management",
-    "habits",
-    "analytics",
-  ],
-  authors: [
-    {
-      name: "Echelon Team",
-      url: "https://github.com/DevAnnafi/Echelon",
-    },
-  ],
-  viewport: "width=device-width, initial-scale=1",
-  robots: "index, follow",
-};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -40,11 +23,11 @@ export default function RootLayout({
       <body className="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="flex flex-col min-h-screen">
-            <Navbar />
+            {!isHomePage && <Navbar />}
             <main className="flex-1 w-full">
               {children}
             </main>
-            <Footer />
+            {!isHomePage && <Footer />}
           </div>
         </ThemeProvider>
       </body>

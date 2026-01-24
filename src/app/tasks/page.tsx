@@ -39,10 +39,15 @@ export default function TasksPage() {
   const [sortBy, setSortBy] = useState<"due_date" | "priority" | "created">("due_date");
 
   // Form state
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    priority: "low" | "medium" | "high";
+    due_date: string;
+  }>({
     title: "",
     description: "",
-    priority: "medium" as const,
+    priority: "medium",
     due_date: "",
   });
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabaseClient";
-import type { User, UserProfile, UserStats } from "@/types/user";
+import type { UserProfile, UserStats } from "@/types/user";
 
 /**
  * Get user profile by user ID

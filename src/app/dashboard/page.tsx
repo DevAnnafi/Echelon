@@ -5,7 +5,7 @@ import { MessageSquare, CheckCircle2, TrendingUp, Zap, Calendar, Settings } from
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function Dashboard() {
-  const [hoveredCard, setHoveredCard] = useState(null);
+const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const chartData = [
     { day: 'Mon', productivity: 65, focus: 70 },

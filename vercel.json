@@ -4,16 +4,14 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "env": [
-    {
-      "key": "NEXT_PUBLIC_SUPABASE_URL",
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": {
       "description": "Supabase project URL"
     },
-    {
-      "key": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
       "description": "Supabase anonymous key"
     }
-  ],
+  },
   "regions": ["iad1"],
   "functions": {
     "api/**/*.ts": {

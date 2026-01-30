@@ -220,3 +220,30 @@ export default function Dashboard() {
     </ProtectedRoute>
   );
 }
+// Quick navigation component at the end
+function QuickNav() {
+  return (
+    <div className="mt-20 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <a href="/tasks" className="p-6 bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-lg hover:border-blue-400 transition-colors text-center">
+        <div className="text-3xl mb-2">✓</div>
+        <h3 className="font-semibold text-white">Tasks</h3>
+        <p className="text-xs text-gray-400 mt-1">Manage your tasks</p>
+      </a>
+      <a href="/documents" className="p-6 bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-lg hover:border-purple-400 transition-colors text-center">
+        <div className="text-3xl mb-2">📄</div>
+        <h3 className="font-semibold text-white">Documents</h3>
+        <p className="text-xs text-gray-400 mt-1">Write and organize</p>
+      </a>
+      <a href="/goals" className="p-6 bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg hover:border-green-400 transition-colors text-center">
+        <div className="text-3xl mb-2">🎯</div>
+        <h3 className="font-semibold text-white">Goals</h3>
+        <p className="text-xs text-gray-400 mt-1">Track progress</p>
+      </a>
+      <a href="/insights" className="p-6 bg-gradient-to-br from-pink-500/20 to-pink-600/20 border border-pink-500/30 rounded-lg hover:border-pink-400 transition-colors text-center">
+        <div className="text-3xl mb-2">🧠</div>
+        <h3 className="font-semibold text-white">Insights</h3>
+        <p className="text-xs text-gray-400 mt-1">AI recommendations</p>
+      </a>
+    </div>
+  );
+}

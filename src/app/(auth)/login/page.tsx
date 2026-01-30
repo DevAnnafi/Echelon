@@ -1,12 +1,11 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
+import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -22,35 +21,44 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const result = await signIn('credentials', {
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        redirect: false,
       });
 
-      if (result?.error) {
-        setError('Invalid email or password');
-      } else if (result?.ok) {
+      if (error) {
+        setError(error.message || 'Invalid email or password');
+      } else {
         router.push('/dashboard');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
+      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
-    const result = await signIn("google", {
-      redirect: true,
-      callbackUrl: "/dashboard",
-    });
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-    if (result?.error) {
-      setError(result.error);
+      if (error) {
+        setError(error.message || 'Failed to sign in with Google');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+      console.error('Google sign in error:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
-
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">

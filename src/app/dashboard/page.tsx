@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import { MessageSquare, CheckCircle2, TrendingUp, Zap, Calendar, Settings } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useAuth } from '@/context/AuthContext';
 
-export default function Dashboard() {
+function DashboardContent() {
 const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const chartData = [
@@ -208,5 +210,13 @@ const [hoveredCard, setHoveredCard] = useState<string | null>(null);
         }
       `}</style>
     </section>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   );
 }

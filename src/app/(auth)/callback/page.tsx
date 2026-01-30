@@ -1,10 +1,8 @@
-// app/auth/callback/page.tsx
-
-"use client";
+'use client';
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
 
 export default function CallbackPage() {
   const router = useRouter();
@@ -12,23 +10,25 @@ export default function CallbackPage() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        const supabase = createClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL!,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+        // Supabase automatically handles the OAuth callback
+        // The session should already be established by the auth state listener
+        const { data: { session }, error } = await supabase.auth.getSession();
 
-        // Get the session from the URL hash
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error || !data.session) {
+        if (error) {
+          console.error('Auth callback error:', error);
           router.push('/auth/error');
           return;
         }
 
-        // Session is now established, redirect to login
-        router.push('/login');
+        if (session) {
+          // Session is established, redirect to dashboard
+          router.push('/dashboard');
+        } else {
+          // No session, redirect to login
+          router.push('/login');
+        }
       } catch (error) {
-        console.error('Auth callback error:', error);
+        console.error('Callback error:', error);
         router.push('/auth/error');
       }
     };
@@ -37,8 +37,11 @@ export default function CallbackPage() {
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p>Confirming your email...</p>
+    <div className="flex items-center justify-center min-h-screen bg-black">
+      <div className="text-center">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-400">Confirming your authentication...</p>
+      </div>
     </div>
   );
 }

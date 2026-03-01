@@ -27,7 +27,7 @@ Echelon Dashboard brings together AI, analytics, and design to create a smart, e
 | **State Management** | Zustand |
 | **AI Integration** | OpenAI API |
 | **Backend** | Next.js Server Actions & API Routes |
-| **Database** | PostgreSQL (Supabase) |
+| **Database** | PostgreSQL |
 | **ORM** | Prisma |
 | **Authentication** | Auth.js (NextAuth) or Supabase Auth |
 | **Charts** | Recharts |

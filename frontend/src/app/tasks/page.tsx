@@ -24,8 +24,8 @@ function TasksContent() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    priority: 'medium' as const,
-    status: 'todo' as const,
+    priority: 'medium' as 'low' | 'medium' | 'high',
+    status: 'todo' as 'todo' | 'in_progress' | 'completed',
     due_date: '',
   });
 

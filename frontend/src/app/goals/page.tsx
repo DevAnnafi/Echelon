@@ -29,7 +29,7 @@ function GoalsContent() {
     description: '',
     target_date: '',
     progress: 0,
-    status: 'active' as const,
+    status: 'active' as 'active' | 'completed' | 'archived',
   });
 
   useEffect(() => {

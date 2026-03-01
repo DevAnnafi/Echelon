@@ -19,9 +19,9 @@
   },
   "homepage": "https://github.com/DevAnnafi/Echelon#readme",
   "dependencies": {
-    "@prisma/client": "^7.4.2",
+    "@prisma/client": "^6.1.0",
     "dotenv": "^17.3.1",
-    "prisma": "^6.19.2"
+    "prisma": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^25.3.3"

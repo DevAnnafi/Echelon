@@ -2,38 +2,13 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../../lib/supabase';
 
 export default function CallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleCallback = async () => {
-      try {
-        // Supabase automatically handles the OAuth callback
-        // The session should already be established by the auth state listener
-        const { data: { session }, error } = await supabase.auth.getSession();
-
-        if (error) {
-          console.error('Auth callback error:', error);
-          router.push('/auth/error');
-          return;
-        }
-
-        if (session) {
-          // Session is established, redirect to dashboard
-          router.push('/dashboard');
-        } else {
-          // No session, redirect to login
-          router.push('/login');
-        }
-      } catch (error) {
-        console.error('Callback error:', error);
-        router.push('/auth/error');
-      }
-    };
-
-    handleCallback();
+    // TODO: Implement Auth.js callback handling
+    router.push('/dashboard');
   }, [router]);
 
   return (

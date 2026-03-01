@@ -115,9 +115,6 @@ export default function Documentation() {
               development:
             </p>
             <pre className="bg-slate-100 dark:bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto">
-{`NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_key
-OPENAI_API_KEY=your_openai_api_key`}
             </pre>
           </section>
 
